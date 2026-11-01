@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Reproducible local exports of the original measurement artifacts
+/data/processed/
+/UH2024.csv
