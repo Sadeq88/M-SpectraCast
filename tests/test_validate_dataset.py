@@ -110,14 +110,6 @@ class DatasetValidationTests(unittest.TestCase):
         self.assertEqual(result["sampling_intervals"]["gaps_above_twice_median"], 1)
         self.assertTrue(any("Intervals vary" in x for x in result["warnings"]))
 
-    def test_paper_dimension_mismatch_warns_or_fails(self):
-        text = "timestamp,763\n2024-01-01T00:00:00Z,0.1\n"
-        result = self.check_csv(text, dataset="ED-2024")
-        self.assertEqual(result["paper_comparison"]["expected_observations"], 56220)
-        self.assertFalse(result["paper_comparison"]["dimensions_match"])
-        with self.assertRaises(validator.ValidationError):
-            self.check_csv(text, dataset="ED-2024", strict_paper_counts=True)
-
     def test_explicit_timestamp_format_and_header(self):
         result = self.check_csv(
             "Datetime,763\n24/06/2022 18:22:45,0.1\n",

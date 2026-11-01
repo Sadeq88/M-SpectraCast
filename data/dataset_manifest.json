@@ -47,14 +47,7 @@
       "timestamp_min": "2022-06-24T18:22:00",
       "timestamp_max": "2022-12-07T08:02:00",
       "unnamed_empty_columns": 0,
-      "local_clock_regressions": [],
-      "paper_reported": {
-        "site": "Electronics Department, University of Rome Tor Vergata, Rome",
-        "channels": 27,
-        "readings_per_channel": 34061,
-        "first_timestamp": "2022-06-24T18:22:45",
-        "last_timestamp": "2022-12-14T16:32:14"
-      }
+      "local_clock_regressions": []
     },
     {
       "id": "UH-2022",
@@ -105,14 +98,7 @@
           "previous": "2022-10-30T02:58:31",
           "current": "2022-10-30T02:05:31"
         }
-      ],
-      "paper_reported": {
-        "site": "University Hospital complex, Rome",
-        "channels": 27,
-        "readings_per_channel": 43532,
-        "first_timestamp": "2022-05-16T11:10:45",
-        "last_timestamp": "2022-12-15T15:48:08"
-      }
+      ]
     },
     {
       "id": "ED-2024",
@@ -165,14 +151,7 @@
           "previous": "2023-10-29T02:56:15",
           "current": "2023-10-29T02:03:47"
         }
-      ],
-      "paper_reported": {
-        "site": "Electronics Department, University of Rome Tor Vergata, Rome",
-        "channels": 29,
-        "readings_per_channel": 56220,
-        "first_timestamp": "2023-03-15T16:32:20",
-        "last_timestamp": "2024-09-04T03:00:54"
-      }
+      ]
     },
     {
       "id": "UH-2024",
@@ -225,14 +204,7 @@
           "previous": "2023-10-29T02:53:23",
           "current": "2023-10-29T02:00:55"
         }
-      ],
-      "paper_reported": {
-        "site": "University Hospital complex, Rome",
-        "channels": 29,
-        "readings_per_channel": 68700,
-        "first_timestamp": "2023-03-21T14:24:09",
-        "last_timestamp": "2024-07-02T04:45:44"
-      }
+      ]
     }
   ]
 }

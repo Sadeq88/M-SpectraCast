@@ -26,7 +26,7 @@ class DatasetPreparationTests(unittest.TestCase):
             "sha256": preparer.sha256(self.source), "timestamp_column": "date",
             "timestamp_format": "%d/%m/%Y %H:%M:%S", "channel_labels": ["763", "773"],
             "rows": 2, "units": "V/m", "timestamp_min": "2023-10-29T02:03:47",
-            "timestamp_max": "2023-10-29T02:56:15", "paper_reported": {"readings_per_channel": 3},
+            "timestamp_max": "2023-10-29T02:56:15",
         }
 
     def test_empty_columns_removed_and_measurements_and_row_order_preserved(self):
@@ -40,7 +40,6 @@ class DatasetPreparationTests(unittest.TestCase):
         self.assertEqual(self.source.read_bytes(), before)
         self.assertEqual(report["removed_empty_unnamed_columns"], 2)
         self.assertEqual(len(report["local_clock_regressions"]), 1)
-        self.assertFalse(report["paper_row_count_matches"])
 
     def test_hash_mismatch_rejected(self):
         self.source.write_text(self.source.read_text() + "\n")

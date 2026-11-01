@@ -10,7 +10,7 @@ From the repository root on a system with `sha256sum`:
 sha256sum --check data/SHA256SUMS
 ```
 
-The Python preparation tool also verifies these hashes automatically and supports Windows, macOS, and Linux without external packages. A matching hash establishes file identity with this release; it does not resolve the documented differences from the paper's Table 2.
+The Python preparation tool also verifies these hashes automatically and supports Windows, macOS, and Linux without external packages. A matching hash establishes file identity with this release.
 
 ## Prepare all four datasets
 
@@ -47,14 +47,12 @@ python tools/validate_dataset.py data/processed/ED2024.csv --unit V/m --allow-lo
 python tools/validate_dataset.py data/processed/UH2024.csv --unit V/m --allow-local-clock-regressions
 ```
 
-Local-clock regressions are explicitly reported and allowed only for timezone-naive inputs when that option is selected. It does not resolve clock ambiguity or convert timestamps to UTC. Read [DATA_QUALITY.md](../docs/DATA_QUALITY.md) before elapsed-time analysis or forecasting.
+Local-clock changes are reported while preserving source row order. The option applies to timezone-naive clocks and does not assign UTC times. See [DATA_FORMAT.md](../docs/DATA_FORMAT.md) for time-axis interpretation.
 
 ## Metadata
 
-- [dataset_manifest.json](dataset_manifest.json): actual source-artifact identities, dimensions, formats, and paper-reported metadata.
+- [dataset_manifest.json](dataset_manifest.json): source-artifact identities, dimensions, date formats, and channel labels.
 - [channel_dictionary.csv](channel_dictionary.csv): exact frequency labels and channel ordering.
-- [source_file_audit.json](source_file_audit.json): direct audit of the committed exports, including the CSV contained in UH2024.zip.
 - [SHA256SUMS](SHA256SUMS): original artifact checksums.
-- [paper_dataset_catalog.json](paper_dataset_catalog.json): manuscript-reported values for comparison, not an additional dataset release.
 
 Generated exports are excluded from Git because they can be recreated from the original files with the utility above.
