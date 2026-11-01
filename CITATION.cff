@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use M-SpectraCast or its associated datasets and analyses, please cite the article below."
+type: software
+title: "M-SpectraCast"
+license: Apache-2.0
+authors:
+  - family-names: "Melhem"
+    given-names: "Sadeq Bani"
+  - family-names: "Tabassum"
+    given-names: "Hina"
+  - family-names: "Chiaraviglio"
+    given-names: "Luca"
+  - family-names: "Nguyen"
+    given-names: "Uyen Trang"
+repository-code: "https://github.com/Sadeq88/M-SpectraCast"
+url: "https://github.com/Sadeq88/M-SpectraCast"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Melhem"
+      given-names: "Sadeq Bani"
+    - family-names: "Tabassum"
+      given-names: "Hina"
+    - family-names: "Chiaraviglio"
+      given-names: "Luca"
+    - family-names: "Nguyen"
+      given-names: "Uyen Trang"
+  title: "M-SpectraCast: Multivariate Cluster-Enhanced Time-Series Forecasting for Wireless Networks"
+  journal: "IEEE Open Journal of the Communications Society"
+  year: 2026
+  volume: 7
+  start: 13525
+  end: 13547
+  doi: "10.1109/OJCOMS.2026.3743620"
+  url: "https://doi.org/10.1109/OJCOMS.2026.3743620"
