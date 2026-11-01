@@ -12,6 +12,8 @@
 
 [Paper](https://doi.org/10.1109/OJCOMS.2026.3743620) · [Datasets](#datasets) · [Quick start](#quick-start) · [Experimental setup](docs/REPRODUCIBILITY.md) · [Citation](#citation)
 
+**Dataset companion to the published article.** This repository provides the four frequency-selective RF-EMF datasets, their metadata, and supporting data utilities.
+
 M-SpectraCast is a clustering-enhanced framework for multivariate wireless time-series forecasting. It learns soft groups of frequency channels with related temporal behavior and combines cluster-specific forecasting heads, enabling selective information sharing across channels. The paper evaluates the approach with **DLinear, PatchTST, and TSMixer** on long-term, frequency-selective radio-frequency electromagnetic field (RF-EMF) measurements from Rome, Italy.
 
 ![M-SpectraCast framework: normalization, temporal backbone, channel clustering and prototype learning, and cluster-aware forecasting.](assets/framework.png)
