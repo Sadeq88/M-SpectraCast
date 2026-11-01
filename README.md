@@ -18,7 +18,7 @@ M-SpectraCast is a clustering-enhanced framework for multivariate wireless time-
 
 ![M-SpectraCast framework: normalization, temporal backbone, channel clustering and prototype learning, and cluster-aware forecasting.](assets/framework.png)
 
-*Fig. 1 from the authors' manuscript, DOI [10.1109/OJCOMS.2026.3743620](https://doi.org/10.1109/OJCOMS.2026.3743620), reproduced under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The drawing is extracted from its page without changes to its content.*
+*Fig. 1 from the authors' manuscript, DOI [10.1109/OJCOMS.2026.3743620](https://doi.org/10.1109/OJCOMS.2026.3743620).*
 
 ## What is included
 
