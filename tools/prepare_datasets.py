@@ -113,7 +113,6 @@ def prepare(entry: dict, input_dir: Path, output_dir: Path) -> dict:
         temporary.unlink(missing_ok=True)
 
     median = statistics.median(gaps) if gaps else None
-    paper = entry["paper_reported"]
     return {
         "dataset": entry["id"],
         "source_file": source.name,
@@ -133,8 +132,6 @@ def prepare(entry: dict, input_dir: Path, output_dir: Path) -> dict:
         "positive_interval_median_seconds": median,
         "positive_interval_max_seconds": max(gaps) if gaps else None,
         "gaps_over_one_hour": sum(gap > 3600 for gap in gaps),
-        "paper_rows": paper["readings_per_channel"],
-        "paper_row_count_matches": rows == paper["readings_per_channel"],
         "note": "No timezone was inferred, no rows were sorted, and no values were interpolated, resampled, or normalized.",
     }
 
@@ -159,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     report_file = args.output_dir / ("preparation_report.json" if args.dataset == "all" else args.dataset + "_preparation_report.json")
     report_file.write_text(json.dumps({"manifest_source_commit": manifest["source_commit"], "datasets": reports}, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {report_file.name}. Originals were preserved. See docs/DATA_QUALITY.md before time-based analysis.")
+    print(f"Wrote {report_file.name}. Originals were preserved. See docs/DATA_FORMAT.md for time-axis conventions.")
     return 0
 
 

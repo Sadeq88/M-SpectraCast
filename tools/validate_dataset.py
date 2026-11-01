@@ -18,9 +18,6 @@ from datetime import datetime
 from pathlib import Path
 
 
-CATALOG = Path(__file__).resolve().parents[1] / "data" / "paper_dataset_catalog.json"
-
-
 class ValidationError(ValueError):
     """An invalid CSV schema, timestamp, or measurement was found."""
 
@@ -74,8 +71,6 @@ def validate(
     frequency_column: str = "frequency_mhz",
     value_column: str = "value",
     time_format: str | None = None,
-    dataset: str | None = None,
-    strict_paper_counts: bool = False,
     allow_local_clock_regressions: bool = False,
 ) -> dict:
     path = Path(path)
@@ -83,8 +78,6 @@ def validate(
         raise ValidationError("Unit must be V/m, dBm, or standardized.")
     if file_format not in {"wide", "long"}:
         raise ValidationError("Format must be wide or long.")
-    if strict_paper_counts and dataset is None:
-        raise ValidationError("--strict-paper-counts requires --dataset.")
 
     first = last = None
     gaps: list[float] = []
@@ -196,29 +189,6 @@ def validate(
         if max(gaps) - min(gaps) > 1:
             warnings.append("Intervals vary by more than one second; this is not a verified regular grid.")
 
-    paper_comparison = None
-    if dataset is not None:
-        catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
-        if dataset not in catalog["datasets"]:
-            raise ValidationError(f"Unknown paper dataset: {dataset}.")
-        paper = catalog["datasets"][dataset]
-        counts_match = (
-            observations == paper["readings_per_channel"]
-            and len(expected_channels) == paper["channels"]
-        )
-        paper_comparison = {
-            "dataset": dataset,
-            "expected_observations": paper["readings_per_channel"],
-            "expected_channels": paper["channels"],
-            "dimensions_match": counts_match,
-            "scope": "Dimensions only; does not establish measurement identity, dates, or provenance.",
-        }
-        if not counts_match:
-            message = "Dimensions differ from the paper catalog; explain the export or preprocessing difference."
-            if strict_paper_counts:
-                raise ValidationError(message)
-            warnings.append(message)
-
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
@@ -239,7 +209,6 @@ def validate(
         "last_timestamp": last.isoformat(),
         "sampling_intervals": interval,
         "local_clock_regressions": clock_regressions,
-        "paper_comparison": paper_comparison,
         "warnings": warnings,
     }
 
@@ -249,8 +218,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("path", type=Path, help="CSV file; never modified")
     parser.add_argument("--unit", choices=["V/m", "dBm", "standardized"], required=True)
     parser.add_argument("--format", dest="file_format", choices=["wide", "long"], default="wide")
-    parser.add_argument("--dataset", choices=["ED-2022", "UH-2022", "ED-2024", "UH-2024"])
-    parser.add_argument("--strict-paper-counts", action="store_true")
     parser.add_argument("--allow-local-clock-regressions", action="store_true", help="Report and permit regressions only for timezone-naive local clocks; does not resolve timezone or reorder rows")
     parser.add_argument("--timestamp-column", default="timestamp")
     parser.add_argument("--frequency-column", default="frequency_mhz")

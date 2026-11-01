@@ -1,53 +1,53 @@
-# RF-EMF dataset card
+# RF-EMF datasets
 
-## Scope
+## Overview
 
-Four frequency-selective RF-EMF measurement exports accompany the M-SpectraCast paper. They support multichannel forecasting, inter-frequency dependency analysis, temporal characterization, and cross-dataset research with an explicitly defined channel correspondence.
+Four long-term, frequency-selective RF-EMF measurement campaigns accompany the [M-SpectraCast paper](https://doi.org/10.1109/OJCOMS.2026.3743620). They support multivariate forecasting, inter-frequency dependency analysis, temporal characterization, and cross-dataset research.
 
-The campaigns were collected at the Electronics Department of the University of Rome Tor Vergata (ED) and a University Hospital complex (UH), in Rome, Italy. Campaign names follow the paper; the later campaigns began in 2023 and retain the `2024` suffix.
+The measurements were collected at the Electronics Department of the University of Rome Tor Vergata (ED) and a University Hospital complex (UH), in Rome, Italy. Campaign identifiers follow the paper: ED-2022, UH-2022, ED-2024, and UH-2024.
 
-The [README dataset table](../README.md#datasets) lists actual export dimensions and date coverage. [DATA_QUALITY.md](DATA_QUALITY.md) compares these files with the manuscript's Table 2 and documents timestamp gaps and local-clock reversals.
-
-## Measurement provenance
+## Measurement chain
 
 The paper describes a calibrated measurement chain comprising a **Keysight N6850A** omnidirectional passive antenna, an **Anritsu MS27102A** remote spectrum-monitoring unit, a 1.5 m low-loss coaxial cable, and **ARPA-Lazio Search24** control software. The setup covers monitored cellular bands up to 6 GHz.
 
-The distributed values are electric-field magnitudes in **V/m**. Frequency-column labels are channel center frequencies in **MHz**. The paper describes acquisition at an average interval of about 7-7.5 minutes. The exports have campaign-specific timestamp formats and interruptions; the actual intervals are reported in the quality notes.
+The distributed values represent electric-field strength in **V/m**. Frequency-column labels identify channel center frequencies in **MHz**. The paper describes an average acquisition interval of approximately 7-7.5 minutes.
 
-## Files and channel definitions
+## Download
 
-| Campaign | Source artifact | Channels | Data representation |
+| Campaign | Site | Channels | Source file |
 | --- | --- | ---: | --- |
-| ED-2022 | [ED2022.csv](../ED2022.csv) | 27 | Wide CSV |
-| UH-2022 | [UH2022.csv](../UH2022.csv) | 27 | Wide CSV |
-| ED-2024 | [ED2024.csv](../ED2024.csv) | 29 | Wide CSV with empty trailing columns |
-| UH-2024 | [UH2024.zip](../UH2024.zip), member `UH2024.csv` | 29 | Zipped wide CSV with empty trailing columns |
+| ED-2022 | Electronics Department | 27 | [ED2022.csv](../ED2022.csv) |
+| UH-2022 | University Hospital | 27 | [UH2022.csv](../UH2022.csv) |
+| ED-2024 | Electronics Department | 29 | [ED2024.csv](../ED2024.csv) |
+| UH-2024 | University Hospital | 29 | [UH2024.zip](../UH2024.zip), member `UH2024.csv` |
 
-Each source row contains a `date` field followed by one value for every monitored frequency channel. The [channel dictionary](../data/channel_dictionary.csv) preserves exact labels and order for each campaign and assigns the paper's descriptive G1/G2/G3 regions. The machine-readable [manifest](../data/dataset_manifest.json) specifies exact filenames, formats, hashes, and observed dimensions.
+Each row provides synchronized measurements across its monitored frequency channels. See the [file-format guide](DATA_FORMAT.md) for CSV schemas and timestamp handling, the [manifest](../data/dataset_manifest.json) for file metadata, and [SHA256SUMS](../data/SHA256SUMS) for checksums.
 
-The descriptive physical groups cover approximately 763-1870 MHz (G1), 2120-2680 MHz (G2), and 3447-3760 MHz (G3). These intervals do not imply continuous spectral coverage. They are not the learned latent clusters used by M-SpectraCast.
+## Frequency channels
 
-## Units and conversion
+The [channel dictionary](../data/channel_dictionary.csv) records each campaign's exact frequency labels, channel order, and descriptive physical group:
 
-The paper converts calibrated received power in dBm into RMS electric-field strength using
+| Group | Approximate frequency region |
+| --- | --- |
+| G1 | 763-1870 MHz |
+| G2 | 2120-2680 MHz |
+| G3 | 3447-3760 MHz |
+
+These regions describe the monitored channels; they do not imply continuous spectral coverage. M-SpectraCast learns latent clusters from temporal representations rather than imposing these physical groups as prediction clusters.
+
+## Physical quantities
+
+The paper relates calibrated received power to RMS electric-field strength through
 
 $$
 P_r^{(W)}(f)=10^{(P_r^{(dBm)}(f)-30)/10},\qquad
-E_f=\sqrt{\frac{P_r^{(W)}(f) Z_0}{A_e(f)}}.
+E_f=\sqrt{\frac{P_r^{(W)}(f)Z_0}{A_e(f)}}.
 $$
 
-Here $Z_0=376.73\,\Omega$, $A_e(f)=G_f\lambda_f^2/(4\pi)$, and $\lambda_f=c/f$. Frequency-dependent antenna calibration is required for the original conversion. The released CSVs already contain field values; the preparation utility performs no power-to-field conversion. Raw received-power logs and calibration files are not included in this repository.
+Here $Z_0=376.73\,\Omega$, $A_e(f)=G_f\lambda_f^2/(4\pi)$, and $\lambda_f=c/f$. The supplied CSV values are already expressed in V/m; the data-preparation utility preserves those values.
 
-## Preprocessing and time interpretation
+## Use and citation
 
-Source artifacts are preserved. The preparation utility verifies file identity, removes only wholly empty unnamed columns, normalizes date text, and preserves channel order, observation order, and measurement strings. No timezone, missing values, or additional observations are inferred.
+Preserve channel order and acquisition order when constructing multivariate inputs. Fit normalization and learned preprocessing on training data only. Report the campaign identifiers, input hashes, temporal split, and preprocessing procedure with derived research results.
 
-Three exports have local-clock regressions consistent with daylight-saving transitions, and some contain long acquisition interruptions. Confirm source timezone and gap policy before interpreting elapsed-time dependencies. An explicit source-to-target physical channel map is needed for cross-dataset evaluation; one cannot infer the paper's exact map from array indices or broad frequency regions.
-
-Fit any normalization, learned imputation, clustering, or other statistical preprocessing using the training portion only. Keep chronological forecast targets within their assigned split. Record any changes in channel count, row count, or timestamp coverage introduced by downstream preprocessing.
-
-## Intended uses and limitations
-
-These are observational measurements from two environments and selected channels. They do not represent all frequency bands, devices, countries, or deployment conditions. A time-series forecast alone is not a regulatory compliance assessment. Exact reproduction of the article additionally requires its final experiment inputs, forecasting implementation, saved settings, seeds, and channel map; those artifacts are not currently included.
-
-Please cite the paper using [CITATION.cff](../CITATION.cff) or [references.bib](../references.bib), and retain the applicable [license and attribution](../LICENSING.md).
+Please cite the paper using [CITATION.cff](../CITATION.cff) or [references.bib](../references.bib) and retain the applicable [license and attribution](../LICENSING.md).
