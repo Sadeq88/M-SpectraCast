@@ -2,6 +2,9 @@
 
 import hashlib
 import importlib.util
+import contextlib
+import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -72,6 +75,26 @@ class DatasetValidationTests(unittest.TestCase):
     def test_aware_clock_regression_still_fails_with_option(self):
         with self.assertRaises(validator.ValidationError):
             self.check_csv("timestamp,763\n2024-01-01T01:00:00Z,0.1\n2024-01-01T00:00:00Z,0.2\n", allow_local_clock_regressions=True)
+
+    def test_cli_reports_naive_local_clock_changes_by_default(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "clock.csv"
+            path.write_text("timestamp,763\n2023-10-29T02:56:15,0.1\n2023-10-29T02:03:47,0.2\n")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = validator.main([str(path), "--unit", "V/m"])
+            report = json.loads(output.getvalue())
+            self.assertEqual(code, 0)
+            self.assertEqual(report["status"], "valid_with_warnings")
+            self.assertEqual(len(report["local_clock_regressions"]), 1)
+
+    def test_cli_strict_time_order_rejects_local_clock_changes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "clock.csv"
+            path.write_text("timestamp,763\n2023-10-29T02:56:15,0.1\n2023-10-29T02:03:47,0.2\n")
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = validator.main([str(path), "--unit", "V/m", "--strict-time-order"])
+            self.assertEqual(code, 2)
 
     def test_incomplete_last_long_observation_fails(self):
         with self.assertRaisesRegex(validator.ValidationError, "final timestamp"):

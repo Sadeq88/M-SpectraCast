@@ -47,7 +47,7 @@ python tools/validate_dataset.py data/processed/ED2024.csv --unit V/m
 python tools/validate_dataset.py data/processed/UH2024.csv --unit V/m 
 ```
 
-Local-clock changes are reported while preserving source row order. The option applies to timezone-naive clocks and does not assign UTC times. See [DATA_FORMAT.md](../docs/DATA_FORMAT.md) for time-axis interpretation.
+Local-clock changes are reported while preserving source row order. Validation retains the source local-clock convention and does not assign UTC times. See [DATA_FORMAT.md](../docs/DATA_FORMAT.md) for time-axis interpretation.
 
 ## Metadata
 

@@ -33,4 +33,4 @@ The utility verifies source hashes, reads the named ZIP member directly, omits o
 
 Timestamps retain the source local-clock convention. The preparation utility preserves acquisition order and reports clock changes without sorting or assigning timezone offsets. For analyses expressed in elapsed time, use the acquisition timestamps and an explicitly chosen timezone and gap-handling policy. For model windows, state the observation-based lookback, horizon, and preprocessing procedure used.
 
-The validator's `--allow-local-clock-regressions` option permits reported local-clock changes while retaining source row order. It does not assign UTC times. Read the preparation report when choosing an elapsed-time analysis procedure.
+The command-line validator reports local-clock changes while retaining source row order. It does not assign UTC times. Use `--strict-time-order` to require strictly increasing timestamps; timezone-aware inputs are always checked in chronological order. Read the preparation report when choosing an elapsed-time analysis procedure.
